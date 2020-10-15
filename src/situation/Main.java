@@ -3,23 +3,25 @@ package situation;
 public class Main {
 
     public static void main(String[] args) {
+
         Object lock = new Object();
+
         Runnable task = () -> {
             synchronized (lock) {
                 try {
                     lock.wait();
                 }
                 catch (InterruptedException e) {
-                    System.out.println("interrupted");
+                    System.out.println("INTERRUPTED");
                 }
             }
         };
 
-        Thread thread1 = new Thread(task);
-        System.out.println(thread1.getState());
+        Thread thread = new Thread(task);
+        System.out.println(thread.getState());
 
-        thread1.start();
-        System.out.println(thread1.getState());
+        thread.start();
+        System.out.println(thread.getState());
 
         try {
             Thread.sleep(3000);
@@ -27,14 +29,14 @@ public class Main {
         catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println(thread1.getState());
+        System.out.println(thread.getState());
 
         synchronized (lock) {
             lock.notify();
         }
-        System.out.println(thread1.getState());
+        System.out.println(thread.getState());
 
-        thread1.stop();
-        System.out.println(thread1.getState());
+        thread.stop();
+        System.out.println(thread.getState());
     }
 }
